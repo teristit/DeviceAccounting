@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to GeeksforGeeks</title>
+    <style>
+
+        .welcome-text {
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .visit-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            text-decoration: none;
+            background-color: green;
+            color: #fff;
+            margin-left: 700px;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .visit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+<body>
+    <br><br>
+    <div class="welcome-text">Welcome to GeeksforGeeks</div>
+    <br>
+    <a href="{{ url_for('visit_geeksforgeeks') }}" class="visit-button">Visit</a>
+</body>
+</html>

@@ -1,3 +1,7 @@
+app
+templates
+config.py
+run.py
 from flask import Flask
 
 app = Flask(__name__)
