@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Устройство #{{ device.id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Устройство #{{ device.id }}</h4>
+                    <span class="badge bg-secondary">{{ device.device_type.name }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Основная информация</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Серийный номер:</strong> {{ device.serial_number }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Модель:</strong> {{ device.model_name }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Дата добавления:</strong> {{ device.created_at.strftime('%d.%m.%Y %H:%M') }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Статистика</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Количество отказов:</strong> {{ device.fault_reports|length }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Количество ремонтов:</strong> {{ device.repairs|length }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5>История отказов</h5>
+                    {% if device.fault_reports %}
+                    <div class="list-group">
+                        {% for fault in device.fault_reports %}
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ fault.failure_description|truncate(50) }}</h6>
+                                <small>{{ fault.report_date.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">Нет зарегистрированных отказов</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <h5>История ремонтов</h5>
+                    {% if device.repairs %}
+                    <div class="list-group">
+                        {% for repair in device.repairs %}
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ repair.repair_description|truncate(50) }}</h6>
+                                <small>{{ repair.repair_date.strftime('%d.%m.%Y') }}</small>
+                            </div>
+                            <small>Стоимость: {{ repair.repair_cost }} руб.</small>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">Нет зарегистрированных ремонтов</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

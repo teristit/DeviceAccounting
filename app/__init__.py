@@ -1,35 +1,31 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from .config import Config
 
 db = SQLAlchemy()
-login_manager = LoginManager()
+login = LoginManager()
+login.login_view = 'main.login'
 
-def create_app():
-    app = Flask(__name__,
-            template_folder='web',
-            static_folder='web/static')
-    app.config.from_object('app.config.Config')
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
     db.init_app(app)
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
+    login.init_app(app)
 
-    # Регистрация user_loader
-    @login_manager.user_loader
-    def load_user(user_id):
-        from app.models import User  # Импортируем здесь, чтобы избежать циклических импортов
-        return User.query.get(int(user_id))
+    # Импортируем модели после инициализации db, но до создания Blueprint
+    from app.models import User
 
-    # Регистрация маршрутов
-    from app.routes.auth import auth_bp
-    from app.routes.admin import admin_bp
-    from app.routes.voting import voting_bp
-    from app.routes.main import main_bp
+    @login.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(admin_bp)
-    app.register_blueprint(voting_bp)
-    app.register_blueprint(main_bp) # Регистрация Blueprint main
+    from app.routes import bp
+    app.register_blueprint(bp)
+
+    with app.app_context():
+        db.create_all()
 
     return app

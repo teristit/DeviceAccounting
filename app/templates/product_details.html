@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.product_name }} Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ product.product_name }} Details</h1>
+    <h2>Defects</h2>
+    <ul>
+        {% for defect in defects %}
+            <li>
+                <b>Date:</b> {{ defect.date }}<br>
+                <b>Finder:</b> {{ defect.bug_finder.username if defect.bug_finder else 'N/A' }}<br>
+                <b>Explanation:</b> {{ defect.failure_explanation }}<br>
+                <b>Cause:</b> {{ defect.suspected_cause }}<br>
+                <b>Repairer:</b> {{ defect.repairer.username if defect.repairer else 'N/A' }}
+            </li>
+        {% else %}
+            <li>No defects found for this product.</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
