@@ -111,7 +111,7 @@ def report_fault():
 @login_required
 def repair_list():
     repairs = Repair.query.order_by(Repair.repair_date.desc()).all()
-    return render_template('repairs/list.html', repairs=repairs)
+    return render_template('faults/list.html', repairs=repairs)
 
 @bp.route('/repair/add', methods=['GET', 'POST'])
 @login_required
