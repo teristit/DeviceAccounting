@@ -97,7 +97,7 @@ def type_list():
 @login_required
 def add_type():
     form = TypeForm()
-    if form.model_name and form.device_type:
+    if form.model_name.data and form.device_type.data:
         types = DeviceType(
             name=form.model_name.data,
             common_failures=form.common_failures.data
