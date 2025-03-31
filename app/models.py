@@ -3,6 +3,12 @@ from app import db
 from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from werkzeug.security import generate_password_hash, check_password_hash
+from enum import Enum
+
+class Role(Enum):
+    TESTER = 'tester'
+    REPAIRER = 'repairer'
+    ADMIN = 'admin'
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,7 +17,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
-    role = db.Column(db.String(10), default='user')
+    role = db.Column(db.Enum(Role), default=Role.TESTER, nullable=False)
+    full_name = db.Column(db.String(100), nullable=True)
+    bio = db.Column(db.Text, nullable=True)
+    avatar = db.Column(db.String(255), nullable=True)  # Путь к изображению
 
     # Связи с другими моделями
     faults_reported = db.relationship('FaultReport', backref='reporter', lazy=True)

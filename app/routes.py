@@ -1,8 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request, Blueprint
 from flask_login import login_required, current_user, login_user, logout_user
 from app import db
-from app.models import User, Device, DeviceType, FaultReport, Repair, CommonFailure
-from app.forms import (LoginForm, RegistrationForm, DeviceForm, FaultReportForm, RepairForm)
+from app.models import User, Device, DeviceType, FaultReport, Repair, CommonFailure, Role, DeviceType
+from app.forms import (LoginForm, RegistrationForm, DeviceForm, FaultReportForm, RepairForm, ProfileForm, TypeForm)
+from .decorators import role_required, admin_required
+
+
 
 bp = Blueprint('main', __name__)
 
@@ -83,6 +86,29 @@ def add_device():
         return redirect(url_for('main.device_list'))
     return render_template('devices/add.html', form=form)
 
+
+@bp.route('/type')
+@login_required
+def type_list():
+    types = DeviceType.query.all()
+    return render_template('type/list.html', types=types)
+
+@bp.route('/type/add', methods=['GET', 'POST'])
+@login_required
+def add_type():
+    form = TypeForm()
+    if form.model_name and form.device_type:
+        types = DeviceType(
+            name=form.model_name.data,
+            common_failures=form.common_failures.data
+        )
+        db.session.add(types)
+        db.session.commit()
+        flash('Модель добавлена добавлено')
+        return redirect(url_for('main.type_list'))
+    return render_template('type/add.html', types=form)
+
+
 # Отчеты об отказах
 @bp.route('/faults')
 @login_required
@@ -162,3 +188,52 @@ def add_repair_route():  # Изменили имя функции
         flash('Ремонт добавлен')
         return redirect(url_for('main.repair_list_route'))  # Обновили ссылку
     return render_template('repairs/add.html', form=form)
+
+
+
+@bp.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm()
+    if form.validate_on_submit():
+        current_user.full_name = form.full_name.data
+        current_user.bio = form.bio.data
+
+        if form.avatar.data:
+            filename = secure_filename(form.avatar.data.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            form.avatar.data.save(filepath)
+            current_user.avatar = filename
+
+        db.session.commit()
+        flash('Профиль обновлен!', 'success')
+        return redirect(url_for('profile'))
+
+    elif request.method == 'GET':
+        form.full_name.data = current_user.full_name
+        form.bio.data = current_user.bio
+
+    return render_template('profile.html', form=form)
+
+@bp.route('/test_device/<int:device_id>', methods=['POST'])
+@role_required(Role.TESTER)
+def test_device(device_id):
+    # Логика тестирования устройства
+    pass
+
+@bp.route('/repair_device/<int:device_id>', methods=['POST'])
+@role_required(Role.REPAIRER)
+def repair_device(device_id):
+    # Логика ремонта устройства
+    pass
+
+@bp.route('/admin/dashboard')
+@admin_required
+def admin_dashboard():
+    users = User.query.all()
+    return render_template('admin/dashboard.html', users=users)
+
+@bp.route('/admin')
+@admin_required  # Теперь без скобок!
+def admin_panel():
+    return render_template('admin.html')

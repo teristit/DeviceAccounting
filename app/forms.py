@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, \
     SelectField, FloatField
 from wtforms.fields.simple import BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
+from flask_wtf.file import FileField, FileAllowed
 
 class LoginForm(FlaskForm):
     username = StringField('Имя пользователя', validators=[DataRequired()])
@@ -39,9 +40,18 @@ class RegistrationForm(FlaskForm):
 
 class DeviceForm(FlaskForm):
     serial_number = StringField('Серийный номер', validators=[DataRequired()])
-    model_name = StringField('Модель', validators=[DataRequired()])
+    model_name = StringField('Название', validators=[DataRequired()])
     device_type = SelectField('Тип устройства', coerce=int)
     submit = SubmitField('Добавить')
+
+class TypeForm(FlaskForm):
+    model_name = StringField('Название', validators=[DataRequired()])
+    device_type = StringField('Модель', validators=[DataRequired()])
+    common_failures = SelectField('Частые ошибки', choices=[])
+    submit = SubmitField('Добавить')
+
+class CommonFailures(FlaskForm):
+    pass
 
 class FaultReportForm(FlaskForm):
     device = SelectField('Устройство', coerce=int)
@@ -61,3 +71,11 @@ class RepairForm(FlaskForm):
     repair_description = TextAreaField('Описание ремонта', validators=[DataRequired()])
     repair_cost = FloatField('Стоимость ремонта', validators=[DataRequired()])
     submit = SubmitField('Сохранить')
+
+class ProfileForm(FlaskForm):
+    full_name = StringField('Полное имя')
+    bio = TextAreaField('О себе')
+    avatar = FileField('Аватар', validators=[
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Только изображения!')
+    ])
+    submit = SubmitField('Обновить')

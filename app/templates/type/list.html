@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Список отказов{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Список отказов</h1>
+    <a href="{{ url_for('main.add_type') }}" class="btn btn-success">
+        <i class="bi bi-plus-lg"></i> Добавить модель
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Модель</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fault in faults %}
+                    <tr>
+                        <td>{{ fault.id }}</td>
+                        <td>{{ fault.name }}</td>
+                        <td>{{ common_failures|truncate(50) }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            {% if not fault.repair %}
+                            <a href="{{ url_for('main.add_repair', fault_id=fault.id) }}" class="btn btn-sm btn-success">
+                                <i class="bi bi-tools"></i>
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
