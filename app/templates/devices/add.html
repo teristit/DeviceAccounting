@@ -3,43 +3,48 @@
 {% block title %}Добавление устройства{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6 mx-auto">
-        <div class="card">
-            <div class="card-header">
-                <h4>Добавить новое устройство</h4>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{{ url_for('main.add_device') }}">
-                    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Добавить новое устройство</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('main.add_device') }}">
+                        {{ form.hidden_tag() }}
 
-                    <div class="mb-3">
-                        {{ form.serial_number.label(class="form-label") }}
-                        {{ form.serial_number(class="form-control") }}
-                        {% for error in form.serial_number.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
+                        <div class="mb-3">
+                            {{ form.serial_number.label(class="form-label") }}
+                            {{ form.serial_number(class="form-control") }}
+                            {% for error in form.serial_number.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
 
-                    <div class="mb-3">
-                        {{ form.model_name.label(class="form-label") }}
-                        {{ form.model_name(class="form-control") }}
-                        {% for error in form.model_name.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
-                    </div>
+                        <div class="mb-3">
+                            {{ form.model_name.label(class="form-label") }}
+                            {{ form.model_name(class="form-control") }}
+                            {% for error in form.model_name.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
 
-                    <div class="mb-3">
-                        {{ form.device_type.label(class="form-label") }}
-                        {{ form.device_type(class="form-select") }}
-                    </div>
+                        <div class="mb-3">
+                            {{ form.device_type.label(class="form-label") }}
+                            <select class="form-select" id="{{ form.device_type.id }}"
+                                    name="{{ form.device_type.name }}">
+                                {% for value, label in form.device_type.choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Добавить устройство</button>
-                    </div>
-                </form>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Добавить устройство</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

@@ -30,7 +30,7 @@
                 </li>
                 {% if current_user.role.value == 'admin' %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('main.repair_list') }}">Сотрудники</a>
+                    <a class="nav-link" href="{{ url_for('main.user_list') }}">Сотрудники</a>
                 </li>
                 {% endif %}
             </ul>

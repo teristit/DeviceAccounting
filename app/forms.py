@@ -6,16 +6,12 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from flask_wtf.file import FileField, FileAllowed
 
 class LoginForm(FlaskForm):
-    username = StringField('Имя пользователя', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Имя пользователя', validators=[
-        DataRequired(),
-        Length(min=4, max=25)
-    ])
     email = StringField('Email', validators=[
         DataRequired(),
         Email(message='Введите корректный email адрес')
@@ -25,6 +21,10 @@ class RegistrationForm(FlaskForm):
         Length(min=2, max=50)
     ])
     last_name = StringField('Фамилия', validators=[
+        DataRequired(),
+        Length(min=2, max=50)
+    ])
+    patronymic = StringField('Отчество', validators=[
         DataRequired(),
         Length(min=2, max=50)
     ])
@@ -42,6 +42,11 @@ class DeviceForm(FlaskForm):
     serial_number = StringField('Серийный номер', validators=[DataRequired()])
     model_name = StringField('Название', validators=[DataRequired()])
     device_type = SelectField('Тип устройства', coerce=int)
+    device_type = SelectField(
+        'Тип устройства',
+        choices=[],  # Можно заполнить динамически
+        validators=[DataRequired()]
+    )
     submit = SubmitField('Добавить')
 
 class TypeForm(FlaskForm):
@@ -60,17 +65,11 @@ class FaultReportForm(FlaskForm):
 
 class RepairForm(FlaskForm):
     device = SelectField('Устройство', coerce=int)
-    fault_report = SelectField('Отчет об отказе', coerce=int)
-    repair_description = TextAreaField('Описание ремонта', validators=[DataRequired()])
-    repair_cost = FloatField('Стоимость ремонта')
+    repair_description = TextAreaField('Отчет по ремонту', validators=[DataRequired()])
+    repair_cost = TextAreaField('Замененные компоненты')
     submit = SubmitField('Сохранить')
 
-class RepairForm(FlaskForm):
-    device = SelectField('Устройство', coerce=int, validators=[DataRequired()])
-    fault_report = SelectField('Отчет об отказе', coerce=int)
-    repair_description = TextAreaField('Описание ремонта', validators=[DataRequired()])
-    repair_cost = FloatField('Стоимость ремонта', validators=[DataRequired()])
-    submit = SubmitField('Сохранить')
+
 
 class ProfileForm(FlaskForm):
     full_name = StringField('Полное имя')

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Добавление устройства{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h4>Добавить новую модель</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('main.add_type') }}">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.model_name.label(class="form-label") }}
+                        {{ form.model_name(class="form-control") }}
+                        {% for error in form.model_name.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.device_type.label(class="form-label") }}
+                        {{ form.device_type(class="form-control") }}
+                        {% for error in form.device_type.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.common_failures.label(class="form-label") }}
+                        {{ form.common_failures(class="form-select") }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Добавить модель</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

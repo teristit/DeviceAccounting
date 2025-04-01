@@ -12,15 +12,15 @@ class Role(Enum):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
+    patronymic = db.Column(db.String(50), nullable=False)
     role = db.Column(db.Enum(Role), default=Role.TESTER, nullable=False)
-    full_name = db.Column(db.String(100), nullable=True)
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(255), nullable=True)  # Путь к изображению
+    verified = db.Column(db.Boolean, default=False, nullable=False)  # Добавленное поле
 
     # Связи с другими моделями
     faults_reported = db.relationship('FaultReport', backref='reporter', lazy=True)
@@ -38,7 +38,7 @@ class User(UserMixin, db.Model):
 class DeviceType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, nullable=False)
-    devices = db.relationship('Device', backref='type', lazy=True)
+    devices = db.relationship('Device', back_populates='device_type')
     common_failures = db.relationship('CommonFailure', backref='device_type', lazy=True)
 
     def __repr__(self):
@@ -50,10 +50,11 @@ class Device(db.Model):
     model_name = db.Column(db.String(64), nullable=False)
     device_type_id = db.Column(db.Integer, db.ForeignKey('device_type.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
+    device_type = db.relationship('DeviceType', back_populates='devices')
     faults = db.relationship('FaultReport', backref='device', lazy=True)
     repairs = db.relationship('Repair', backref='device', lazy=True)
-
+    def get_model_name(self):
+        return f"{self.model_name}"
     def __repr__(self):
         return f'<Device: {self.serial_number} - {self.model_name}>'
 
@@ -74,7 +75,6 @@ class FaultReport(db.Model):
     reporter_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     failure_description = db.Column(db.Text)
     predicted_replacement = db.Column(db.Text)
-
     repair = db.relationship('Repair', backref='fault_report', uselist=False, lazy=True)
 
     def __repr__(self):
@@ -86,7 +86,7 @@ class Repair(db.Model):
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'), nullable=False)
     repairer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     repair_description = db.Column(db.Text)
-    repair_cost = db.Column(db.Float)
+    replaced_components = db.Column(db.Text)
     fault_report_id = db.Column(db.Integer, db.ForeignKey('fault_report.id'))
 
     def __repr__(self):

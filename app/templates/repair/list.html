@@ -17,16 +17,24 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Название</th>
-                        <th>Частые ошибки</th>
+                        <th>Дата регистрации</th>
+                        <th>ID устройства</th>
+                        <th>Название устройства</th>
+                        <th>Ремонтник</th>
+                        <th>Замененные компоненты</th>
+                        <th>Отчет по ремонту</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for type in types %}
+                    {% for repair in repairs %}
                     <tr>
-                        <td>{{ type.id }}</td>
-                        <td>{{ type.name }}</td>
-                        <td>{{ type.common_failures|truncate(50) }}</td>
+                        <td>{{ repair.id }}</td>
+                        <td>{{ repair.repair_date }}</td>
+                        <td>{{ repair.device_id }}</td>
+                        <td>{{ repair.get_model_name() }}</td>
+                        <td>{{ repair.get_full_name() }}</td>
+                        <td>{{ repair.replaced_components|truncate(50) }}</td>
+                        <td>{{ repair.repair_description|truncate(50) }}</td>
                         <td>
 
                             {% if not type.repair %}

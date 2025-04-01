@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Устройство #{{ type.id }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Тип #{{ type.id }}</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Основная информация</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <strong>Название:</strong> {{ type.name }}
+                                </li>
+                                <li class="list-group-item">
+                                    <strong>Количество зарегистрированных устройств этой
+                                        модели:</strong> {{ type.devices|length }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5>Типовые неисправности</h5>
+                                {% if type.common_failures %}
+                                    <div class="list-group">
+                                        {% for failure in type.common_failures.split('\n') if failure.strip() %}
+                                            <div class="list-group-item">
+                                                {{ loop.index }}. {{ failure }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning">Типовые неисправности не указаны</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

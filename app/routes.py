@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 from flask import render_template, flash, redirect, url_for, request, Blueprint
 from flask_login import login_required, current_user, login_user, logout_user
 from app import db
@@ -24,7 +26,7 @@ def login():
 
     if form.validate_on_submit():
         # Ищем пользователя в базе данных
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
 
         # Проверяем пароль
         if user is None or not user.check_password(form.password.data):
@@ -50,10 +52,10 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(
-            username=form.username.data,
             email=form.email.data,
             first_name=form.first_name.data,
-            last_name=form.last_name.data
+            last_name=form.last_name.data,
+            patronymic=form.last_name.data
         )
         user.set_password(form.password.data)
         db.session.add(user)
@@ -74,6 +76,7 @@ def device_list():
 @login_required
 def add_device():
     form = DeviceForm()
+    form.device_type.choices = [(t.id, t.name) for t in DeviceType.query.all()]
     if form.validate_on_submit():
         device = Device(
             serial_number=form.serial_number.data,
@@ -86,27 +89,69 @@ def add_device():
         return redirect(url_for('main.device_list'))
     return render_template('devices/add.html', form=form)
 
+@bp.route('/device/<int:id>')
+def device_detail(id):
+    device = Device.query.get_or_404(id)
+    return render_template('devices/detail.html', device=device)
 
 @bp.route('/type')
 @login_required
 def type_list():
     types = DeviceType.query.all()
     return render_template('type/list.html', types=types)
+@bp.route('/type/<int:type_id>')
+def show_type_detail(type_id):
+    type = DeviceType.query.get_or_404(type_id)
+    return render_template('type/detail.html', type=type)
+
+
+#@bp.route('/type/add', methods=['GET', 'POST'])
+#@login_required
+#def add_type():
+#    form = TypeForm()
+#    if form.model_name.data and form.device_type.data:
+#        types = DeviceType(
+#            name=form.model_name.data,
+#            common_failures=form.common_failures.data
+#        )
+#        db.session.add(types)
+#        db.session.commit()
+#        flash('Модель добавлена добавлено')
+#        return redirect(url_for('main.type_list'))
+#    return render_template('type/add.html', types=form)
+
 
 @bp.route('/type/add', methods=['GET', 'POST'])
 @login_required
 def add_type():
-    form = TypeForm()
+    form = TypeForm()  # Создаем экземпляр формы
+
+    # Для GET-запроса просто отображаем форму
+    if request.method == 'GET':
+        return render_template('type/add.html', form=form)  # Ключевое исправление
+
+    # Для POST-запроса обрабатываем данные
     if form.model_name.data and form.device_type.data:
-        types = DeviceType(
-            name=form.model_name.data,
-            common_failures=form.common_failures.data
-        )
-        db.session.add(types)
-        db.session.commit()
-        flash('Модель добавлена добавлено')
-        return redirect(url_for('main.type_list'))
-    return render_template('type/add.html', types=form)
+        try:
+            print(1)
+            if form.common_failures.data:
+                new_type = DeviceType(
+                    name=form.model_name.data,
+                    common_failures=form.common_failures.data
+                )
+            else:
+                new_type = DeviceType(
+                    name=form.model_name.data
+                )
+            db.session.add(new_type)
+            db.session.commit()
+            flash('Тип устройства успешно добавлен', 'success')
+            return redirect(url_for('main.type_list'))
+        except IntegrityError:
+            db.session.rollback()
+            flash('Тип с таким названием уже существует', 'danger')
+
+    return render_template('type/add.html', form=form)
 
 
 # Отчеты об отказах
@@ -137,7 +182,7 @@ def report_fault():
 @login_required
 def repair_list():
     repairs = Repair.query.order_by(Repair.repair_date.desc()).all()
-    return render_template('faults/list.html', repairs=repairs)
+    return render_template('repair/list.html', repairs=repairs)
 
 @bp.route('/repair/add', methods=['GET', 'POST'])
 @login_required
@@ -155,7 +200,7 @@ def add_repair():
         db.session.commit()
         flash('Ремонт добавлен')
         return redirect(url_for('main.repair_list'))
-    return render_template('repairs/add.html', form=form)
+    return render_template('repair/add.html', form=form)
 
 @bp.route('/logout')
 @login_required
@@ -189,6 +234,34 @@ def add_repair_route():  # Изменили имя функции
         return redirect(url_for('main.repair_list_route'))  # Обновили ссылку
     return render_template('repairs/add.html', form=form)
 
+@bp.route('/users')
+@login_required
+def user_list():
+    users = User.query.order_by(User.id.desc()).all()
+    return render_template('user/list.html', users=users)
+
+@bp.route('/users/add', methods=['GET', 'POST'])
+@login_required
+def add_user():
+    form = RepairForm()
+    if form.validate_on_submit():
+        repair = Repair(
+            device_id=form.device.data,
+            repairer_id=current_user.id,
+            repair_description=form.repair_description.data,
+            repair_cost=form.repair_cost.data,
+            fault_report_id=form.fault_report.data
+        )
+        db.session.add(repair)
+        db.session.commit()
+        flash('Ремонт добавлен')
+        return redirect(url_for('main.repair_list_route'))  # Обновили ссылку
+    return render_template('user/add.html', form=form)
+
+@bp.route('/users/<int:user_id>')
+def edit_profile(user_id):
+    type = DeviceType.query.get_or_404(user_id)
+    return render_template('type/detail.html', type=type)
 
 
 @bp.route('/profile', methods=['GET', 'POST'])

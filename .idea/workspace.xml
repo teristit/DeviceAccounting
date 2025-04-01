@@ -5,8 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="68aabd69-d8ea-4737-b1b7-56316cbcd936" name="Changes" comment="DeviceType">
+      <change afterPath="$PROJECT_DIR$/app/static/css/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/js/bootstrap.bundle.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/repair/add.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/repair/detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/repair/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/type/detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/user/add.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/user/detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/user/list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/type/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/type/add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/auth/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/auth/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/auth/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/devices/add.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/devices/add.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/type/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/type/list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,24 +73,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Flask server.DeviceAccounting.executor&quot;: &quot;Run&quot;,
-    &quot;Flask server.Flask (run.py).executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Projects/DeviceAccounting/app&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Flask server.DeviceAccounting.executor": "Run",
+    "Flask server.Flask (run.py).executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "E:/Projects/DeviceAccounting/app/templates/user",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Projects\DeviceAccounting\app\templates\user" />
+      <recent name="E:\Projects\DeviceAccounting\app\templates\repair" />
+      <recent name="E:\Projects\DeviceAccounting\app\templates\type" />
       <recent name="E:\Projects\DeviceAccounting\app" />
       <recent name="E:\Projects\DeviceAccounting" />
     </key>
@@ -140,7 +160,8 @@
       <updated>1743079064042</updated>
       <workItem from="1743079065424" duration="8647000" />
       <workItem from="1743164828014" duration="7493000" />
-      <workItem from="1743417177347" duration="19917000" />
+      <workItem from="1743417177347" duration="19960000" />
+      <workItem from="1743495955776" duration="19841000" />
     </task>
     <task id="LOCAL-00001" summary="created a project">
       <option name="closed" value="true" />
@@ -158,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743435990577</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="DeviceType">
+      <option name="closed" value="true" />
+      <created>1743437180663</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743437180663</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -182,6 +211,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DeviceAccounting$DeviceAccounting.coverage" NAME="DeviceAccounting Coverage Results" MODIFIED="1743165302072" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/DeviceAccounting$Flask__run_py_.coverage" NAME="Flask (run.py) Coverage Results" MODIFIED="1743437083629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DeviceAccounting$Flask__run_py_.coverage" NAME="Flask (run.py) Coverage Results" MODIFIED="1743519372426" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

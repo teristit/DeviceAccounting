@@ -17,23 +17,28 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Название</th>
-                        <th>Частые ошибки</th>
+                        <th>Email</th>
+                        <th>ФИО</th>
+                        <th>Специализация</th>
+                        <th>Компетенции</th>
+                        <th>Фотография</th>
+                        <th>Проверенный</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for type in types %}
+                    {% for user in users %}
                     <tr>
-                        <td>{{ type.id }}</td>
-                        <td>{{ type.name }}</td>
-                        <td>{{ type.common_failures|truncate(50) }}</td>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.first_name }} {{ user.last_name }} {{ user.patronymic }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.bio }}</td>
+                        <td>{{ user.verified }}</td>
+                        <td>{{ user.avatar }}</td>
                         <td>
-
-                            {% if not type.repair %}
-                            <a href="{{ url_for('main.type_detail', type_id=type.id) }}" class="btn btn-sm btn-success">
+                            <a href="{{ url_for('main.edit_profile', user_id=user.id) }}" class="btn btn-sm btn-success">
                                 <i class="bi bi-tools"></i>
                             </a>
-                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
