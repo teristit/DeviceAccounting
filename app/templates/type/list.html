@@ -28,9 +28,8 @@
                         <td>{{ type.name }}</td>
                         <td>{{ type.common_failures|truncate(50) }}</td>
                         <td>
-
                             {% if not type.repair %}
-                            <a href="{{ url_for('main.type_detail', type_id=type.id) }}" class="btn btn-sm btn-success">
+                            <a href="{{ url_for('main.show_type_detail', type_id=type.id) }}" class="btn btn-sm btn-success">
                                 <i class="bi bi-tools"></i>
                             </a>
                             {% endif %}

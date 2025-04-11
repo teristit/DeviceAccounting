@@ -33,6 +33,12 @@
                     <div class="mb-3">
                         {{ form.common_failures.label(class="form-label") }}
                         {{ form.common_failures(class="form-select") }}
+                        <select class="form-select" id="{{ form.device_type.id }}"
+                                    device="{{ form.device_type.name }}">
+                                {% for value, label in form.device_type.choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                        </select>
                     </div>
 
                     <div class="d-grid gap-2">

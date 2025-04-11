@@ -1,3 +1,4 @@
+import os
 from sqlite3 import IntegrityError
 
 from flask import render_template, flash, redirect, url_for, request, Blueprint
@@ -79,8 +80,8 @@ def add_device():
     form.device_type.choices = [(t.id, t.name) for t in DeviceType.query.all()]
     if form.validate_on_submit():
         device = Device(
+            model_name = DeviceType.query.get(form.device_type.data).name,
             serial_number=form.serial_number.data,
-            model_name=form.model_name.data,
             device_type_id=form.device_type.data
         )
         db.session.add(device)
@@ -131,18 +132,12 @@ def add_type():
         return render_template('type/add.html', form=form)  # Ключевое исправление
 
     # Для POST-запроса обрабатываем данные
-    if form.model_name.data and form.device_type.data:
+    if form.model_name.data:
         try:
-            print(1)
-            if form.common_failures.data:
-                new_type = DeviceType(
-                    name=form.model_name.data,
-                    common_failures=form.common_failures.data
-                )
-            else:
-                new_type = DeviceType(
-                    name=form.model_name.data
-                )
+
+            new_type = DeviceType(
+                name=form.model_name.data
+            )
             db.session.add(new_type)
             db.session.commit()
             flash('Тип устройства успешно добавлен', 'success')
@@ -159,15 +154,18 @@ def add_type():
 @login_required
 def fault_list():
     faults = FaultReport.query.order_by(FaultReport.report_date.desc()).all()
+    devices = Device.query.all()
     return render_template('faults/list.html', faults=faults)
 
 @bp.route('/fault/report', methods=['GET', 'POST'])
 @login_required
 def report_fault():
     form = FaultReportForm()
+    form.serial_number.choices = [t.serial_number for t in Device.query.all()]
     if form.validate_on_submit():
+
         fault = FaultReport(
-            device_id=form.device.data,
+            device_id=form.serial_number.data,
             reporter_id=current_user.id,
             failure_description=form.failure_description.data
         )

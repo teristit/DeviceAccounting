@@ -45,9 +45,8 @@ class DeviceType(db.Model):
         return f'<DeviceType: {self.name}>'
 
 class Device(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    serial_number = db.Column(db.String(128), unique=True, nullable=False, index=True)
-    model_name = db.Column(db.String(64), nullable=False)
+    serial_number = db.Column(db.String(128), unique=True, nullable=False, index=True, primary_key=True)
+    model_name = db.Column(db.String(64), nullable=True)
     device_type_id = db.Column(db.Integer, db.ForeignKey('device_type.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     device_type = db.relationship('DeviceType', back_populates='devices')

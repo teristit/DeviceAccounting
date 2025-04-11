@@ -22,14 +22,6 @@
                         </div>
 
                         <div class="mb-3">
-                            {{ form.model_name.label(class="form-label") }}
-                            {{ form.model_name(class="form-control") }}
-                            {% for error in form.model_name.errors %}
-                                <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-
-                        <div class="mb-3">
                             {{ form.device_type.label(class="form-label") }}
                             <select class="form-select" id="{{ form.device_type.id }}"
                                     name="{{ form.device_type.name }}">

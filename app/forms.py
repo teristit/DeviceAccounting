@@ -40,7 +40,6 @@ class RegistrationForm(FlaskForm):
 
 class DeviceForm(FlaskForm):
     serial_number = StringField('Серийный номер', validators=[DataRequired()])
-    model_name = StringField('Название', validators=[DataRequired()])
     device_type = SelectField('Тип устройства', coerce=int)
     device_type = SelectField(
         'Тип устройства',
@@ -51,15 +50,13 @@ class DeviceForm(FlaskForm):
 
 class TypeForm(FlaskForm):
     model_name = StringField('Название', validators=[DataRequired()])
-    device_type = StringField('Модель', validators=[DataRequired()])
-    common_failures = SelectField('Частые ошибки', choices=[])
     submit = SubmitField('Добавить')
 
 class CommonFailures(FlaskForm):
     pass
 
 class FaultReportForm(FlaskForm):
-    device = SelectField('Устройство', coerce=int)
+    serial_number = SelectField('Серийный номер', coerce=int)
     failure_description = TextAreaField('Описание отказа', validators=[DataRequired()])
     submit = SubmitField('Сохранить')
 

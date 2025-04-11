@@ -18,6 +18,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Устройство</th>
+                        <th>Серийный номер</th>
                         <th>Описание</th>
                         <th>Дата</th>
                         <th>Статус</th>
@@ -28,7 +29,8 @@
                     {% for fault in faults %}
                     <tr>
                         <td>{{ fault.id }}</td>
-                        <td>{{ fault.device.model_name }} ({{ fault.device.serial_number }})</td>
+                        <td>{{ devices.query.get(fault.device_id).name }}</td>
+                        <td>{{ fault.device_id }}</td>
                         <td>{{ fault.failure_description|truncate(50) }}</td>
                         <td>{{ fault.report_date.strftime('%d.%m.%Y') }}</td>
                         <td>
